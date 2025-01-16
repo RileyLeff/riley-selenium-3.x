@@ -1,10 +1,20 @@
-FROM --platform=$TARGETPLATFORM ubuntu:22.04
+FROM ubuntu:22.04
 
 ARG TARGETPLATFORM
 ARG TARGETOS
 ARG TARGETARCH
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
+ENV CHROME_PATH=/usr/bin/chromium
+ENV DISPLAY=:99
+ENV SCREEN_WIDTH=1920
+ENV SCREEN_HEIGHT=1080
+ENV SCREEN_DEPTH=24
+ENV SELENIUM_PORT=4444
+ENV HOME=/home/selenium
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMEDRIVER_BIN=/usr/bin/chromedriver
 
 # Create non-root user
 RUN useradd -m -u 1000 selenium
@@ -38,16 +48,6 @@ RUN mkdir -p /tmp/.X11-unix && \
     chown selenium:selenium /opt/selenium-server.jar && \
     mkdir -p /var/log/supervisor && \
     chown -R selenium:selenium /var/log/supervisor
-
-# Environment variables
-ENV DISPLAY=:99
-ENV SCREEN_WIDTH=1920
-ENV SCREEN_HEIGHT=1080
-ENV SCREEN_DEPTH=24
-ENV SELENIUM_PORT=4444
-ENV HOME=/home/selenium
-ENV CHROME_BIN=/usr/bin/chromium
-ENV CHROMEDRIVER_BIN=/usr/bin/chromedriver
 
 # Switch to non-root user
 USER selenium
